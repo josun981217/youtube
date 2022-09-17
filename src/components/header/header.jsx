@@ -1,8 +1,7 @@
-import React from "react";
+import React, { memo } from "react";
 import { useRef } from "react";
 import styles from "./header.module.css";
-
-const Header = ({ onSearch }) => {
+const Header = memo(({ onSearch, goHome }) => {
   const inputRef = useRef();
 
   const onSubmit = (e) => {
@@ -12,6 +11,7 @@ const Header = ({ onSearch }) => {
   const handleSearch = () => {
     const value = inputRef.current.value;
     onSearch(value);
+    inputRef.current.value = null;
   };
 
   const onClick = () => {
@@ -24,9 +24,15 @@ const Header = ({ onSearch }) => {
     }
   };
 
+  const handleHome = () => {
+    inputRef.current.value = null;
+    console.log(inputRef.current.value);
+    goHome();
+  };
+
   return (
     <header className={styles.header}>
-      <div className={styles.logo}>
+      <div className={styles.logo} onClick={handleHome}>
         <img className={styles.logo_icon} src="images/logo.png" alt="" />
         <div className={styles.logo_name}>Youtube</div>
       </div>
@@ -44,6 +50,6 @@ const Header = ({ onSearch }) => {
       </form>
     </header>
   );
-};
+});
 
-export default Header;
+export default React.memo(Header);
